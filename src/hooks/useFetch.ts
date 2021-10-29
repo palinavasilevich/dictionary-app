@@ -1,23 +1,16 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { reactive, toRefs } from "vue";
 
-axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-
-interface State {
+// axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
+interface IState {
   data: null | any[];
   isError: boolean;
   errorMessage?: string;
   isLoading: boolean;
 }
 
-interface Config {
-  url: string;
-  method?: string;
-  data?: any;
-}
-
-export default function useFetch(config) {
-  const state: State = reactive({
+export default function useFetch(config: AxiosRequestConfig) {
+  const state: IState = reactive({
     data: null,
     isError: false,
     errorMessage: "",
@@ -28,9 +21,14 @@ export default function useFetch(config) {
     try {
       const response = await axios.request({ ...config });
       state.data = response.data;
-    } catch (err: any) {
+    } catch (err) {
       state.isError = true;
-      state.errorMessage = err.response.data.message;
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError;
+        if (serverError && serverError.response) {
+          state.errorMessage = serverError.response.data.message;
+        }
+      }
     } finally {
       state.isLoading = false;
     }
