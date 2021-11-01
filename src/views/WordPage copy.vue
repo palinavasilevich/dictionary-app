@@ -9,7 +9,7 @@
       <svg-icon
         :fa-icon="isBookmark ? activeBookmark : faBookmark"
         class="word-card__btn"
-        @click="changeBookmark(wordDetails[0].word)"
+        @click="saveWord(wordDetails[0].word)"
       ></svg-icon>
     </div>
     <div class="word-card__work-info">
@@ -39,16 +39,14 @@
           </p>
         </div>
       </div>
-      <bookmark-button style="margin: 48px auto" />
     </div>
   </div>
-  <loader v-else />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useStore } from "vuex";
+import useWordRouter from "@/hooks/useWordRouter";
+import useFetch, { IState } from "@/hooks/useFetch";
 
 import {
   faPlayCircle,
@@ -59,54 +57,78 @@ import {
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 
 import IWord from "../types/Word";
-import useWordRouter from "@/hooks/useWordRouter";
-import BookmarkButton from "@/components/BookmarkButton.vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
-  components: { BookmarkButton },
   name: "word-card",
 
   setup() {
-    const route = useRoute();
+    const router = useRouter();
     const { word } = route.params;
 
     const store = useStore();
+
     const bookmarks = store.getters["word/bookmarks"];
+
     const isBookmark = ref(!!bookmarks.filter((b) => b.word === word).length);
 
     const audio = ref(null);
-    const playAudio = () => {
-      (audio.value as any).play();
-    };
 
-    const { goBack } = useWordRouter();
+    // const state: IState = reactive({
+    //   data: [],
+    //   isError: false,
+    //   errorMessage: "",
+    //   isLoading: true,
+    // });
+
+    // const { data, isLoading, isError, errorMessage, fetchData } = useFetch({
+    //   url: `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
+    // });
+
+    // const getWordDetails = async () => {
+    //   await fetchData();
+    //   state.data = data.value as IWord[];
+    //   state.isError = isError.value as boolean;
+    //   // state.errorMessage = errorMessage.value as string;
+    //   state.isLoading = isLoading.value as boolean;
+    // };
 
     onMounted(() => {
       store.dispatch("word/GET_WORD_DETAILS", word);
     });
 
-    const changeBookmark = (word: string) => {
+    const goBack = () => {
+      router.go(-1);
+    };
+
+    const saveWord = (word) => {
       isBookmark.value = !isBookmark.value;
 
       if (!bookmarks.filter((b) => b.word === word).length) {
         store.dispatch("word/ADD_BOOKMARK", word);
+        console.log(111);
       } else {
         store.dispatch("word/REMOVE_BOOKMARK", word);
       }
     };
 
+    const playAudio = () => {
+      (audio.value as any).play();
+    };
+
     return {
-      wordDetails: computed((): IWord[] => store.getters["word/wordDetails"]),
-      isLoading: computed((): boolean => store.getters["word/isLoading"]),
-      error: computed((): string => store.getters["word/error"]),
+      wordDetails: computed(() => store.getters["word/wordDetails"]),
+      isLoading: computed(() => store.getters["word/isLoading"]),
+      error: computed(() => store.getters["word/error"]),
       faPlayCircle,
       faArrowLeft,
       faBookmark,
       activeBookmark,
-      isBookmark,
-      audio,
       goBack,
-      changeBookmark,
+      isBookmark,
+      saveWord,
+      audio,
       playAudio,
     };
   },

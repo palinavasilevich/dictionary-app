@@ -1,0 +1,42 @@
+.bookmarks {
+  margin-top: 30px;
+}
+.bookmarks__header {
+  display: flex;
+  align-items: center;
+
+  .header__title {
+    margin-left: 10px;
+  }
+  .header__btn {
+    cursor: pointer;
+  }
+}
+.bookmarks__word-container {
+  box-shadow: rgb(0 0 0 / 5%) 0px 10px 25px;
+  background-color: rgb(255, 255, 255);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+
+  .word-container__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .content_btn {
+      appearance: none;
+      padding: 5px;
+      outline: none;
+      background: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .content_btn:hover {
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

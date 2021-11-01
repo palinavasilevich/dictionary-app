@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { reactive, toRefs } from "vue";
 
 // axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
-interface IState {
+export interface IState {
   data: null | any[];
   isError: boolean;
   errorMessage?: string;

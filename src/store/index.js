@@ -1,9 +1,9 @@
 import { createStore } from "vuex";
 
-import { wordDetailsModule } from "@/store/wordDetailsModule";
+import { word } from "@/store/modules/word";
 
 export default createStore({
   modules: {
-    wordDetails: wordDetailsModule,
+    word,
   },
 });

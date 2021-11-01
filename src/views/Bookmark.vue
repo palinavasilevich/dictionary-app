@@ -8,59 +8,88 @@
       ></svg-icon>
       <h2 class="header__title">Bookmarks</h2>
     </div>
-
-    <div
-      class="bookmarks__word-container"
-      v-for="bookmark in bookmars"
-      :key="bookmark.word"
-    >
-      <div>BOOKMARS</div>
+    <div v-if="bookmars.length">
+      <div
+        class="bookmarks__word-container word-container"
+        v-for="bookmark in paginationBookmars"
+        :key="bookmark.id"
+      >
+        <div class="word-container__content content">
+          <router-link
+            :to="`/search/${bookmark.word}`"
+            style="text-decoration: none; color: #000"
+          >
+            {{ bookmark.word }}
+          </router-link>
+          <button class="content_btn" @click="removeBookmark(bookmark.word)">
+            x
+          </button>
+        </div>
+      </div>
+      <div style="margin-top: 30px">
+        <pagination
+          v-if="totalPage > 1"
+          :totalPage="totalPage"
+          v-model="currentPage"
+          @changeCurrentPage="changeCurrentPage"
+        />
+      </div>
     </div>
+    <p v-else>You haven't added a bookmark to a list yet.</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, ref, watchEffect, ComputedRef } from "vue";
 import { useStore } from "vuex";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "vue-router";
+
+import IBookmark from "@/types/IBookmark";
+import useWordRouter from "@/hooks/useWordRouter";
 
 export default defineComponent({
   name: "bookmarks",
   setup() {
-    const router = useRouter();
     const store = useStore();
-    const goBack = () => router.go(-1);
+
+    const bookmars: ComputedRef<any> = computed(
+      () => store.getters["word/bookmarks"] as IBookmark[]
+    );
+
+    const limitElements = 2;
+    const currentPage = ref(1);
+
+    const totalPage = computed(() =>
+      Math.ceil(bookmars.length / limitElements)
+    );
+
+    const paginationBookmars = computed(() =>
+      bookmars.slice(
+        (currentPage.value - 1) * limitElements,
+        currentPage.value * limitElements
+      )
+    );
+
+    const changeCurrentPage = (currentPage) => {
+      currentPage.value = currentPage;
+    };
+
+    const { goBack } = useWordRouter();
+
+    const removeBookmark = (word: string) => {
+      store.dispatch("word/REMOVE_BOOKMARK", word);
+    };
 
     return {
+      bookmars,
+      paginationBookmars,
       faArrowLeft,
+      totalPage,
       goBack,
-      bookmars: computed(() => store.getters.bookmarks),
+      removeBookmark,
+      currentPage,
+      changeCurrentPage,
     };
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.bookmarks {
-  margin-top: 30px;
-}
-.bookmarks__header {
-  display: flex;
-  align-items: center;
-
-  .header__title {
-    margin-left: 10px;
-  }
-  .header__btn {
-    cursor: pointer;
-  }
-}
-.bookmarks__word-container {
-  box-shadow: rgb(0 0 0 / 5%) 0px 10px 25px;
-  background-color: rgb(255, 255, 255);
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 24px;
-}
-</style>
