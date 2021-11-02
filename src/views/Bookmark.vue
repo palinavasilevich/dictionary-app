@@ -4,7 +4,7 @@
       <svg-icon
         :fa-icon="faArrowLeft"
         class="header__btn"
-        @click="goBack"
+        @click="goHome"
       ></svg-icon>
       <h2 class="header__title">Bookmarks</h2>
     </div>
@@ -46,25 +46,26 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import IBookmark from "@/types/IBookmark";
 import useWordRouter from "@/hooks/useWordRouter";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "bookmarks",
   setup() {
     const store = useStore();
-
-    const bookmars: ComputedRef<any> = computed(
-      () => store.getters["word/bookmarks"] as IBookmark[]
+    const router = useRouter();
+    const bookmars = computed(
+      (): IBookmark[] => store.getters["word/bookmarks"]
     );
 
-    const limitElements = 2;
+    const limitElements = 5;
     const currentPage = ref(1);
 
-    const totalPage = computed(() =>
-      Math.ceil(bookmars.length / limitElements)
+    const totalPage = computed((): number =>
+      Math.ceil(bookmars.value.length / limitElements)
     );
 
-    const paginationBookmars = computed(() =>
-      bookmars.slice(
+    const paginationBookmars = computed((): IBookmark[] =>
+      bookmars.value.slice(
         (currentPage.value - 1) * limitElements,
         currentPage.value * limitElements
       )
@@ -74,7 +75,9 @@ export default defineComponent({
       currentPage.value = currentPage;
     };
 
-    const { goBack } = useWordRouter();
+    const goHome = () => {
+      router.push("/");
+    };
 
     const removeBookmark = (word: string) => {
       store.dispatch("word/REMOVE_BOOKMARK", word);
@@ -85,7 +88,7 @@ export default defineComponent({
       paginationBookmars,
       faArrowLeft,
       totalPage,
-      goBack,
+      goHome,
       removeBookmark,
       currentPage,
       changeCurrentPage,
