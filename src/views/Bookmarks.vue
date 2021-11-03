@@ -8,25 +8,25 @@
       ></svg-icon>
       <h2 class="header__title">Bookmarks</h2>
     </div>
-    <div v-if="bookmars.length">
+    <div v-if="bookmarksValues.length">
       <div
         class="bookmarks__word-container word-container"
-        v-for="bookmark in paginationBookmars"
-        :key="bookmark.id"
+        v-for="bookmark in bookmarksForPagination"
+        :key="bookmark"
       >
         <div class="word-container__content content">
-          <router-link
-            :to="`/search/${bookmark.word}`"
-            style="text-decoration: none; color: #000"
-          >
-            {{ bookmark.word }}
+          <router-link :to="`/search/${bookmark}`" class="bookmarks__link">
+            {{ bookmark }}
           </router-link>
-          <button class="content_btn" @click="removeBookmark(bookmark.word)">
-            x
-          </button>
+
+          <svg-icon
+            :fa-icon="faTimes"
+            class="content_btn"
+            @click="removeBookmark(bookmark)"
+          ></svg-icon>
         </div>
       </div>
-      <div style="margin-top: 30px">
+      <div class="bookmarks__pagination">
         <pagination
           v-if="totalPage > 1"
           :totalPage="totalPage"
@@ -40,12 +40,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watchEffect, ComputedRef } from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import IBookmark from "@/types/IBookmark";
-import useWordRouter from "@/hooks/useWordRouter";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -53,26 +52,27 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
-    const bookmars = computed(
+    const bookmarks = computed(
       (): IBookmark[] => store.getters["word/bookmarks"]
     );
 
+    const bookmarksValues = computed(() => Object.keys(bookmarks.value));
     const limitElements = 5;
     const currentPage = ref(1);
 
     const totalPage = computed((): number =>
-      Math.ceil(bookmars.value.length / limitElements)
+      Math.ceil(bookmarksValues.value.length / limitElements)
     );
 
-    const paginationBookmars = computed((): IBookmark[] =>
-      bookmars.value.slice(
+    const bookmarksForPagination = computed(() =>
+      bookmarksValues.value.slice(
         (currentPage.value - 1) * limitElements,
         currentPage.value * limitElements
       )
     );
 
-    const changeCurrentPage = (currentPage) => {
-      currentPage.value = currentPage;
+    const changeCurrentPage = (currPage) => {
+      currentPage.value = currPage;
     };
 
     const goHome = () => {
@@ -84,9 +84,11 @@ export default defineComponent({
     };
 
     return {
-      bookmars,
-      paginationBookmars,
+      bookmarks,
+      bookmarksValues,
+      bookmarksForPagination,
       faArrowLeft,
+      faTimes,
       totalPage,
       goHome,
       removeBookmark,

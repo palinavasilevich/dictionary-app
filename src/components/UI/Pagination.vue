@@ -34,23 +34,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.pagination {
-  .pagination__item {
-    margin-right: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid teal;
-    cursor: pointer;
-  }
-
-  .pagination__item:hover {
-    background: teal;
-  }
-
-  .active-pagination__item {
-    background: teal;
-  }
-}
-</style>
