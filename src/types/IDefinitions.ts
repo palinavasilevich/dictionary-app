@@ -13,7 +13,7 @@ interface IMeaning {
   definitions: IDefinition[];
 }
 
-export default interface IWord {
+export default interface IDefinitions {
   word: string;
   phonetics: IPhonetic[];
   meanings: IMeaning[];

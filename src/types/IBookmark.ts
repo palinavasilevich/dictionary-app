@@ -1,4 +1,5 @@
+import IDefinitions from "./IDefinitions";
+
 export default interface IBookmark {
-  id: number;
-  word: string;
+  [key: string]: IDefinitions[];
 }
