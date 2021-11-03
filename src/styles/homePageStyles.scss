@@ -26,4 +26,14 @@
 
     cursor: pointer;
   }
+
+  .search-error {
+    margin-top: 15px;
+    text-align: center;
+    color: red;
+  }
+
+  .input-error {
+    border: 1px solid red;
+  }
 }

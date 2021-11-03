@@ -29,7 +29,7 @@
       padding: 5px;
       outline: none;
       background: none;
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       cursor: pointer;
       border: 1px solid transparent;
     }
@@ -38,5 +38,14 @@
       border-radius: 50%;
       background-color: rgba(0, 0, 0, 0.04);
     }
+  }
+
+  .bookmarks__pagination {
+    margin-top: 30px;
+  }
+
+  .bookmarks__link {
+    text-decoration: none;
+    color: #000;
   }
 }

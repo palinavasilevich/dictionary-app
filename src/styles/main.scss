@@ -1,7 +1,9 @@
 @import "@/styles/bookmarkStyles.scss";
-@import "@/styles/wordPageStyles.scss";
+@import "@/styles/definitionStyles.scss";
 @import "@/styles/homePageStyles.scss";
 @import "@/styles/loaderStyles.scss";
+@import "@/styles/paginationStyles.scss";
+@import "@/styles/searchInputStyles.scss";
 * {
   padding: 0;
   margin: 0;
@@ -18,7 +20,8 @@ body {
 }
 
 #app {
-  max-width: 50vw;
+  // max-width: 50vw;
+  width: 500px;
   margin: auto;
 }
 
@@ -41,4 +44,8 @@ body {
   justify-content: center;
 
   cursor: pointer;
+}
+
+.bookmark-btn:hover {
+  box-shadow: 0 0 10px rgb(220, 130, 149);
 }
