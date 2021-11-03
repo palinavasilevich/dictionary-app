@@ -5,8 +5,8 @@ import { mutations } from "./mutations";
 import { WordState } from "./types";
 
 export const state: WordState = {
-  wordDetails: [],
-  bookmarks: JSON.parse(localStorage.getItem("bookmarks")!) || [],
+  definitions: [],
+  bookmarks: JSON.parse(localStorage.getItem("bookmarks")!) || {},
   error: "",
   isLoading: true,
 };

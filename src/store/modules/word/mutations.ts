@@ -1,22 +1,22 @@
 import { MutationTree } from "vuex";
 import { WordState } from "@/store/modules/word/types";
 import IBookmark from "@/types/IBookmark";
-import IWord from "@/types/Word";
+import IDefinitions from "@/types/IDefinitions";
 
 export enum MutationType {
-  SET_WORD_DETAILS = "SET_WORD_DETAILS",
+  SET_DEFINITIONS = "SET_DEFINITIONS",
   SET_BOOKMARKS = "SET_BOOKMARKS",
   SET_ERROR = "SET_ERROR",
   SET_IS_LOADING = "SET_IS_LOADING",
 }
 
 export const mutations: MutationTree<WordState> = {
-  [MutationType.SET_BOOKMARKS](state, bookmarks: IBookmark[]) {
+  [MutationType.SET_BOOKMARKS](state, bookmarks: IBookmark) {
     state.bookmarks = bookmarks;
   },
 
-  [MutationType.SET_WORD_DETAILS](state, data: IWord[]) {
-    state.wordDetails = data;
+  [MutationType.SET_DEFINITIONS](state, definitions: IDefinitions[]) {
+    state.definitions = definitions;
   },
 
   [MutationType.SET_ERROR](state, payload: string) {

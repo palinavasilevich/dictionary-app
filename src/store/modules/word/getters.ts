@@ -1,19 +1,21 @@
 import IBookmark from "@/types/IBookmark";
-import IWord from "@/types/Word";
+import IDefinitions from "@/types/IDefinitions";
 import { GetterTree } from "vuex";
 import { WordState } from "./types";
 
 export const getters: GetterTree<WordState, WordState> = {
-  wordDetails(state) {
-    return state.wordDetails as IWord[];
+  definitions(state) {
+    return state.definitions as IDefinitions[];
   },
+
   bookmarks(state) {
-    return state.bookmarks as IBookmark[];
+    return state.bookmarks as IBookmark;
   },
 
   error(state) {
     return state.error as string;
   },
+
   isLoading(state) {
     return state.isLoading as boolean;
   },

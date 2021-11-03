@@ -1,9 +1,9 @@
-import IBookMark from "@/types/IBookmark";
-import IWord from "@/types/Word";
+import IBookmark from "@/types/IBookmark";
+import IDefinitions from "@/types/IDefinitions";
 
 export interface WordState {
-  bookmarks: IBookMark[] | string;
-  wordDetails: IWord[] | string;
+  bookmarks: IBookmark;
+  definitions: IDefinitions[];
   error: string;
   isLoading: boolean;
 }
