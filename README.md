@@ -1,4 +1,4 @@
-# memories-vocabulary
+# dictionary-app
 
 ## Project setup
 ```
