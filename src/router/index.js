@@ -1,6 +1,6 @@
 import Home from "@/views/Home";
-import WordPage from "@/views/WordPage";
-import Bookmark from "@/views/Bookmark";
+import Definition from "@/views/Definition";
+import Bookmarks from "@/views/Bookmarks";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -11,15 +11,15 @@ const routes = [
   },
   {
     path: "/search/:word",
-    name: "search-word",
-    component: WordPage,
+    name: "definition",
+    component: Definition,
     props: true,
   },
 
   {
     path: "/bookmarks",
     name: "bookmarks",
-    component: Bookmark,
+    component: Bookmarks,
   },
 ];
 
