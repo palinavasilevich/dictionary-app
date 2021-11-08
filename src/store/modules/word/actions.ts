@@ -39,17 +39,14 @@ export const actions: ActionTree<WordState, WordState> = {
     }
   },
 
-  [ActionTypes.ADD_BOOKMARK]({ commit, getters }, { word, definitions }) {
-    const bookmarks = { ...getters.bookmarks, [word]: definitions };
-    commit(MutationType.SET_BOOKMARKS, bookmarks);
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+  [ActionTypes.ADD_BOOKMARK]({ commit, getters }, payload) {
+    commit(MutationType.ADD_NEW_BOOKMARK, payload);
   },
 
   [ActionTypes.REMOVE_BOOKMARK]({ commit, getters }, word: string) {
-    const bookmarks = { ...getters.bookmarks };
-    delete bookmarks[word];
+    const { [word]: _, ...other } = getters.bookmarks;
 
-    commit(MutationType.SET_BOOKMARKS, bookmarks);
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    commit(MutationType.SET_BOOKMARKS, other);
+    localStorage.setItem("bookmarks", JSON.stringify(getters.bookmarks));
   },
 };

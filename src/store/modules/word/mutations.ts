@@ -8,6 +8,7 @@ export enum MutationType {
   SET_BOOKMARKS = "SET_BOOKMARKS",
   SET_ERROR = "SET_ERROR",
   SET_IS_LOADING = "SET_IS_LOADING",
+  ADD_NEW_BOOKMARK = "ADD_NEW_BOOKMARK",
 }
 
 export const mutations: MutationTree<WordState> = {
@@ -25,5 +26,10 @@ export const mutations: MutationTree<WordState> = {
 
   [MutationType.SET_IS_LOADING](state, payload: boolean) {
     state.isLoading = payload;
+  },
+
+  [MutationType.ADD_NEW_BOOKMARK](state, { word, definitions }) {
+    state.bookmarks = { ...state.bookmarks, [word]: definitions };
+    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
   },
 };
