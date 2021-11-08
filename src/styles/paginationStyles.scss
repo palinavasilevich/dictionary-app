@@ -1,5 +1,5 @@
 .pagination {
-  .pagination__item {
+  &__item {
     margin-right: 10px;
     padding: 10px;
     border-radius: 5px;
@@ -7,7 +7,7 @@
     cursor: pointer;
   }
 
-  .pagination__item:hover {
+  &__item:hover {
     background: teal;
   }
 
